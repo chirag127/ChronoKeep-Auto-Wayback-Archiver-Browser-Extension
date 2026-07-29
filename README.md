@@ -1,66 +1,69 @@
-# ClerkFlow-Secure-Auth-Browser-Extension
+# ChronoKeep — Auto Wayback Archiver
 
-Production-ready Manifest V3 browser extension boilerplate with secure Clerk authentication and in-browser data persistence.
+Manifest V3 browser extension that automatically saves every webpage you visit to the Internet Archive's Wayback Machine, with a customizable ignore list for privacy.
 
-**Live:** https://ClerkFlow-Secure-Auth-Browser-Extension.oriz.in
+**Live:** https://chronokeep-auto-wayback-archiver-browser-extension.oriz.in
 
-[![GitHub Stars](https://img.shields.io/github/stars/chirag127/ClerkFlow-Secure-Auth-Browser-Extension?style=flat-square)](https://github.com/chirag127/ClerkFlow-Secure-Auth-Browser-Extension/stargazers)
+[![Stars](https://img.shields.io/github/stars/chirag127/ChronoKeep-Auto-Wayback-Archiver-Browser-Extension?style=flat-square)](https://github.com/chirag127/ChronoKeep-Auto-Wayback-Archiver-Browser-Extension)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](./LICENSE)
-![Build](https://img.shields.io/github/actions/workflow/status/chirag127/ClerkFlow-Secure-Auth-Browser-Extension/ci.yml?style=flat-square)
 ![Manifest V3](https://img.shields.io/badge/Manifest-V3-blue?style=flat-square)
 
 Star this repo if you find it useful.
 
 ## Overview
 
-ClerkFlow is a frontend-only Manifest V3 extension boilerplate. It integrates Clerk for secure user authentication and persists all data in the browser via `chrome.storage.local` — no backend required. Use it as the foundation for building secure, serverless web extensions that meet modern browser security standards.
+ChronoKeep runs in the background and, a moment after each page finishes loading, submits its URL to the Wayback Machine (`https://web.archive.org/save/`). Pages you visit get a permanent public snapshot without any manual action. A customizable ignore list keeps private and sensitive pages out of the archive, and the popup gives real-time feedback on what was saved.
+
+No backend, no account. All state lives in `chrome.storage.local`.
+
+## Features
+
+- Automatic background archiving of visited pages to the Wayback Machine
+- Customizable ignore list (domains / URL patterns) — defaults skip `localhost`, banking, webmail, `chrome://`, `file://`, etc.
+- One-click on/off toggle in the popup
+- Archive history and real-time feedback
+- 100% frontend — no server, no login, data stays in your browser
 
 ## Architecture
 
-Pure frontend, TypeScript + Vite toolchain. Clerk session tokens are handled inside the isolated service-worker context; user-provided API keys and app data live in `chrome.storage.local`.
+Pure Manifest V3 service worker. No build step — load the `extension/` folder as-is.
 
 ```
 extension/
-├── manifest.json          Manifest V3 config
-├── background/            service worker (session + storage)
-├── popup/                 popup UI
-├── scripts/              auth, clerk, api, notes, config
-├── styles/               popup CSS
-└── assets/               icons
+├── manifest.json      Manifest V3 config (tabs + storage permissions)
+├── background.js      service worker — watches tab updates, archives URLs
+├── storage.js         chrome.storage.local wrapper (enabled, history, ignoreList)
+├── popup/             popup UI — toggle + status
+├── options/           options page — manage the ignore list
+└── icons/             extension icons
 ```
 
-## Tech stack
+## Install (developer mode)
 
-| Category | Technology |
+1. Clone this repo:
+   ```bash
+   git clone https://github.com/chirag127/ChronoKeep-Auto-Wayback-Archiver-Browser-Extension.git
+   ```
+2. Open `chrome://extensions/` and enable **Developer mode** (top-right).
+3. Click **Load unpacked** and select the `extension/` folder.
+4. The ChronoKeep icon appears in your toolbar. Archiving is on by default.
+
+See [INSTALL.md](./INSTALL.md) for full details.
+
+## Usage
+
+- Browse normally — visited pages are archived automatically after load.
+- Click the toolbar icon to toggle archiving on/off and view recent activity.
+- Open **Options** to add domains or patterns to the ignore list.
+
+## Permissions
+
+| Permission | Why |
 | --- | --- |
-| Language | TypeScript |
-| Build | Vite |
-| Styling | TailwindCSS |
-| Auth | Clerk SDK |
-| Storage | chrome.storage.local |
-
-## Setup
-
-Requires Node.js 20+ and npm.
-
-```bash
-git clone https://github.com/chirag127/ClerkFlow-Secure-Auth-Browser-Extension.git
-cd ClerkFlow-Secure-Auth-Browser-Extension
-npm install
-npm run dev      # Vite dev server with HMR
-npm run build    # production bundle
-```
-
-## Load in browser
-
-1. `npm run build`
-2. Open `chrome://extensions`, enable Developer mode.
-3. "Load unpacked" → select the built `extension` directory.
-
-## Contributing
-
-See [CONTRIBUTING.md](./CONTRIBUTING.md). Security policy: [SECURITY.md](./SECURITY.md).
+| `tabs` | detect page loads to archive |
+| `storage` | persist settings, history, ignore list |
+| `https://web.archive.org/*` | submit save requests to the Wayback Machine |
 
 ## License
 
-MIT — see [LICENSE](./LICENSE).
+[MIT](./LICENSE)
