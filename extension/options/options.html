@@ -3,55 +3,69 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Auto Wayback Machine Saver - Options</title>
+  <title>ChronoKeep — Options</title>
   <link rel="stylesheet" href="options.css">
 </head>
 <body>
   <div class="container">
     <header>
-      <h1>Auto Wayback Machine Saver</h1>
-      <h2>Options</h2>
+      <span class="wordmark">ChronoKeep</span>
+      <p class="tagline">Options</p>
     </header>
-    
-    <main>
-      <section class="ignore-list-section">
-        <h3>Ignore List</h3>
-        <p class="description">URLs containing these domains or patterns will not be archived.</p>
-        
-        <div class="add-domain-form">
-          <input type="text" id="newDomain" placeholder="Enter domain or pattern (e.g., example.com)">
-          <button id="addDomainBtn">Add</button>
-        </div>
-        
-        <div class="domain-list-container">
-          <ul id="ignoreList" class="domain-list">
-            <li class="loading">Loading...</li>
-          </ul>
-        </div>
-      </section>
-      
-      <section class="history-section">
-        <h3>Archive History</h3>
-        <p class="description">List of pages that have been archived.</p>
-        
-        <div class="history-actions">
-          <button id="clearHistoryBtn" class="danger-btn">Clear History</button>
-        </div>
-        
-        <div class="history-list-container">
-          <div id="historyList" class="history-list">
-            <div class="loading">Loading...</div>
-          </div>
-        </div>
-      </section>
-    </main>
-    
+
+    <div class="sync-notice" id="syncNotice">
+      Settings sync across your devices via your browser account.
+    </div>
+
+    <section>
+      <h2>Archiving</h2>
+
+      <div class="field-row">
+        <label class="toggle-switch" aria-label="Enable auto-archiving">
+          <input type="checkbox" id="enableToggle">
+          <span class="slider"></span>
+        </label>
+        <span class="field-label">Enable auto-archiving</span>
+      </div>
+
+      <div class="field-row">
+        <label for="delayInput" class="field-label">Archive delay (ms)</label>
+        <input type="number" id="delayInput" min="500" max="10000" step="100" class="num-input">
+      </div>
+    </section>
+
+    <section>
+      <h2>Ignore List</h2>
+      <p class="description">URLs containing these domains or patterns will not be archived.</p>
+
+      <div class="add-row">
+        <input type="text" id="newDomain" placeholder="e.g. mybank.com" autocomplete="off">
+        <button id="addDomainBtn">Add</button>
+      </div>
+
+      <ul id="ignoreList" class="domain-list">
+        <li class="loading">Loading...</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Archive History</h2>
+      <p class="description">Stored locally on this device only.</p>
+
+      <div class="history-actions">
+        <button id="clearHistoryBtn" class="danger-btn">Clear History</button>
+      </div>
+
+      <div id="historyList" class="history-list">
+        <div class="loading">Loading...</div>
+      </div>
+    </section>
+
     <footer>
-      <p>Auto Wayback Machine Saver uses the <a href="https://archive.org/help/wayback_api.php" target="_blank">Wayback Machine API</a> to archive web pages.</p>
-      <p>Visit the <a href="https://github.com/chirag127/Auto-Wayback-Machine-Saver" target="_blank">GitHub repository</a> for more information.</p>
+      <p>ChronoKeep archives via <a href="https://archive.org/help/wayback_api.php" target="_blank" rel="noopener">Wayback Machine API</a> &mdash; no backend, no account.</p>
+      <p><a href="https://github.com/chirag127/chronokeep-bs-ext" target="_blank" rel="noopener">GitHub</a> &middot; MIT License</p>
     </footer>
   </div>
-  
   <script type="module" src="options.js"></script>
 </body>
 </html>

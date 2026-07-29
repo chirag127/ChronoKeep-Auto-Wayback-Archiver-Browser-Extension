@@ -1,97 +1,55 @@
-/**
- * Popup script for Auto Wayback Machine Saver
- */
-
 import StorageUtils from "../storage.js";
 
-// DOM elements
 const enableToggle = document.getElementById("enableToggle");
-const statusText = document.getElementById("statusText");
-const historyList = document.getElementById("historyList");
-const optionsBtn = document.getElementById("optionsBtn");
+const statusText   = document.getElementById("statusText");
+const historyList  = document.getElementById("historyList");
+const optionsBtn   = document.getElementById("optionsBtn");
 
-/**
- * Format a timestamp as a readable date string
- * @param {number} timestamp - The timestamp to format
- * @returns {string} - Formatted date string
- */
-function formatDate(timestamp) {
-    const date = new Date(timestamp);
-    return date.toLocaleString();
+function formatDate(ts) {
+  return new Date(ts).toLocaleString(undefined, {
+    month: "short", day: "numeric",
+    hour: "2-digit", minute: "2-digit",
+  });
 }
 
-/**
- * Update the UI based on the current enabled state
- * @param {boolean} enabled - Whether auto-archiving is enabled
- */
-function updateEnabledState(enabled) {
-    enableToggle.checked = enabled;
-    statusText.textContent = `Auto-archiving is ${
-        enabled ? "enabled" : "disabled"
-    }`;
+function updateToggle(enabled) {
+  enableToggle.checked = enabled;
+  statusText.textContent = enabled ? "Auto-archiving enabled" : "Auto-archiving paused";
 }
 
-/**
- * Render the archive history
- * @param {Array} history - The archive history
- */
 function renderHistory(history) {
-    historyList.innerHTML = "";
-
-    if (history.length === 0) {
-        historyList.innerHTML =
-            '<div class="empty-history">No archives yet</div>';
-        return;
-    }
-
-    history.forEach((entry) => {
-        const item = document.createElement("div");
-        item.className = "history-item";
-
-        const link = document.createElement("a");
-        link.href = entry.archiveUrl;
-        link.target = "_blank";
-        link.textContent = entry.url;
-
-        const timestamp = document.createElement("div");
-        timestamp.className = "timestamp";
-        timestamp.textContent = formatDate(entry.timestamp);
-
-        item.appendChild(link);
-        item.appendChild(timestamp);
-        historyList.appendChild(item);
-    });
+  if (!history.length) {
+    historyList.innerHTML = '<div class="empty-state">No archives yet — browse some pages.</div>';
+    return;
+  }
+  historyList.innerHTML = history.map((entry) => {
+    const badgeClass = entry.status === "ok" ? "status-ok" : "status-fail";
+    const badgeLabel = entry.status === "ok" ? "saved" : "failed";
+    return `
+      <div class="history-item">
+        <a href="${entry.archiveUrl}" target="_blank" rel="noopener" title="${entry.url}">${entry.url}</a>
+        <div class="meta">
+          <span class="timestamp">${formatDate(entry.timestamp)}</span>
+          <span class="status-badge ${badgeClass}">${badgeLabel}</span>
+        </div>
+      </div>`;
+  }).join("");
 }
 
-/**
- * Initialize the popup
- */
-async function initPopup() {
-    try {
-        // Get the current enabled state
-        const enabled = await StorageUtils.isEnabled();
-        updateEnabledState(enabled);
+async function init() {
+  const [enabled, history] = await Promise.all([
+    StorageUtils.isEnabled(),
+    StorageUtils.getHistory(),
+  ]);
+  updateToggle(enabled);
+  renderHistory(history);
 
-        // Get and render the history
-        const history = await StorageUtils.getHistory();
-        renderHistory(history);
+  enableToggle.addEventListener("change", async () => {
+    await StorageUtils.setEnabled(enableToggle.checked);
+    updateToggle(enableToggle.checked);
+  });
 
-        // Set up event listeners
-        enableToggle.addEventListener("change", async () => {
-            const newState = enableToggle.checked;
-            await StorageUtils.setEnabled(newState);
-            updateEnabledState(newState);
-        });
-
-        optionsBtn.addEventListener("click", () => {
-            chrome.runtime.openOptionsPage();
-        });
-    } catch (error) {
-        console.error("Error initializing popup:", error);
-        historyList.innerHTML =
-            '<div class="empty-history">Error loading data</div>';
-    }
+  optionsBtn.addEventListener("click", () => chrome.runtime.openOptionsPage());
 }
 
-// Initialize the popup when the DOM is loaded
-document.addEventListener("DOMContentLoaded", initPopup);
+document.addEventListener("DOMContentLoaded", init);

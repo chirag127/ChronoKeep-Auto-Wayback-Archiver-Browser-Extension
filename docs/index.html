@@ -1,40 +1,219 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ChronoKeep — Auto Wayback Archiver</title>
-<meta name="description" content="Browser extension that automatically saves every visited webpage to the Internet Archive Wayback Machine, with a customizable ignore list for privacy.">
-<style>
-  :root { color-scheme: dark; }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; background: #0b1020; color: #e6ebff; line-height: 1.6; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem; }
-  .wrap { max-width: 640px; }
-  .badge { display: inline-block; font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: #7dd3fc; border: 1px solid #1e3a5f; border-radius: 999px; padding: .3rem .8rem; margin-bottom: 1.5rem; }
-  h1 { font-size: 2.4rem; line-height: 1.15; margin-bottom: 1rem; background: linear-gradient(90deg,#7dd3fc,#a78bfa); -webkit-background-clip: text; background-clip: text; color: transparent; }
-  p.lead { font-size: 1.15rem; color: #b8c2e0; margin-bottom: 2rem; }
-  ul { list-style: none; margin-bottom: 2.5rem; }
-  li { padding-left: 1.5rem; position: relative; margin-bottom: .6rem; color: #c9d3f0; }
-  li::before { content: "→"; position: absolute; left: 0; color: #7dd3fc; }
-  .cta { display: inline-flex; align-items: center; gap: .5rem; background: #7dd3fc; color: #0b1020; font-weight: 600; text-decoration: none; padding: .8rem 1.5rem; border-radius: 10px; transition: transform .15s ease; }
-  .cta:hover { transform: translateY(-2px); }
-  footer { margin-top: 3rem; font-size: .85rem; color: #6b779c; }
-  a { color: #7dd3fc; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChronoKeep — Never lose a page again</title>
+  <meta name="description" content="ChronoKeep auto-archives every page you visit to the Internet Archive Wayback Machine. MV3 browser extension. No account. No backend. Cross-device sync.">
+  <link rel="canonical" href="https://chronokeep-bs-ext.oriz.in/">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <main class="wrap">
-    <span class="badge">Manifest V3 · MIT</span>
-    <h1>ChronoKeep</h1>
-    <p class="lead">A browser extension that automatically saves every webpage you visit to the Internet Archive's Wayback Machine — with a customizable ignore list for privacy and real-time archiving feedback.</p>
-    <ul>
-      <li>Automatic background archiving to the Wayback Machine</li>
-      <li>Per-site ignore list keeps private pages out of the archive</li>
-      <li>Real-time archive status in the toolbar popup</li>
-      <li>No account, no tracking — talks only to web.archive.org</li>
+  <nav class="nav">
+    <a class="nav-brand" href="/">ChronoKeep</a>
+    <ul class="nav-links">
+      <li><a href="/#features">Features</a></li>
+      <li><a href="/#how">How it works</a></li>
+      <li><a href="/#faq">FAQ</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="privacy.html">Privacy</a></li>
+      <li><a href="https://github.com/chirag127/chronokeep-bs-ext" class="nav-cta" target="_blank" rel="noopener">GitHub</a></li>
     </ul>
-    <a class="cta" href="https://github.com/chirag127/ChronoKeep-Auto-Wayback-Archiver-Browser-Extension">View on GitHub</a>
-    <footer>Open source · MIT License · by Chirag Singhal</footer>
-  </main>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="badge-row">
+        <span class="badge">Manifest V3</span>
+        <span class="badge">MIT License</span>
+        <span class="badge">100% Client-Side</span>
+        <span class="badge">Cross-Device Sync</span>
+      </div>
+      <h1>Never lose a page again.</h1>
+      <p class="hero-sub">Auto-archive everything you read to the Wayback Machine — silently, automatically, the moment each page loads.</p>
+      <div class="hero-cta">
+        <a href="https://github.com/chirag127/chronokeep-bs-ext/releases/latest" class="btn-primary" target="_blank" rel="noopener">Download for Chrome / Edge</a>
+        <a href="https://github.com/chirag127/chronokeep-bs-ext/releases/latest" class="btn-secondary" target="_blank" rel="noopener">Firefox (coming soon)</a>
+      </div>
+      <p class="hero-note">Free forever. No account. No server. No tracking.</p>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="section" id="features">
+    <div class="wrap">
+      <h2 class="section-title">What ChronoKeep does</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">&#9656;</div>
+          <h3>Automatic archiving</h3>
+          <p>One second after every page loads, the URL is quietly submitted to <a href="https://web.archive.org/" target="_blank" rel="noopener">web.archive.org/save/</a>. No clicks required.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">&#9656;</div>
+          <h3>Cross-device sync</h3>
+          <p>Your ignore list, on/off toggle, and preferences sync across all your signed-in Chrome and Edge instances via <code>chrome.storage.sync</code> — no account we manage, uses the browser's own sync.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">&#9656;</div>
+          <h3>Privacy ignore list</h3>
+          <p>Domains and URL patterns you add are never archived. Defaults cover localhost, banking, webmail, PayPal, and more. You stay in full control.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">&#9656;</div>
+          <h3>Archive history</h3>
+          <p>The popup shows your last 100 archived pages with direct links back to the Wayback Machine snapshot. One click to verify any snapshot.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">&#9656;</div>
+          <h3>Zero backend</h3>
+          <p>All state in <code>chrome.storage</code>. The only outbound requests are to <code>web.archive.org</code>. No server, no database, no analytics, no ads.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">&#9656;</div>
+          <h3>One-click pause</h3>
+          <p>Hit the toolbar icon to toggle archiving on or off instantly. Status syncs to all your devices.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="section section-alt" id="how">
+    <div class="wrap">
+      <h2 class="section-title">How it works</h2>
+      <ol class="steps">
+        <li>
+          <span class="step-num">1</span>
+          <div>
+            <strong>Install</strong> — Download the zip from the latest GitHub release, extract it, open <code>chrome://extensions</code>, enable Developer Mode, and click Load Unpacked. Point it at the <code>extension/</code> folder.
+          </div>
+        </li>
+        <li>
+          <span class="step-num">2</span>
+          <div>
+            <strong>Browse normally</strong> — ChronoKeep runs invisibly in the background. Every time a page finishes loading, it fires a save request to <code>https://web.archive.org/save/&lt;url&gt;</code>.
+          </div>
+        </li>
+        <li>
+          <span class="step-num">3</span>
+          <div>
+            <strong>Check snapshots any time</strong> — Click the toolbar icon to see the last 100 archived pages. Click any link to open its Wayback Machine snapshot. Open Options to manage your ignore list and preferences — changes sync to all your devices.
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Screenshots placeholder -->
+  <section class="section" id="screenshots">
+    <div class="wrap">
+      <h2 class="section-title">Extension UI</h2>
+      <div class="screenshots">
+        <div class="screenshot-card">
+          <div class="screenshot-mock popup-mock">
+            <div class="mock-wordmark">ChronoKeep</div>
+            <div class="mock-toggle-row">
+              <div class="mock-toggle on"></div>
+              <span>Auto-archiving enabled</span>
+            </div>
+            <div class="mock-label">Recent Archives</div>
+            <div class="mock-item"><span class="mock-url">example.com/article</span><span class="mock-badge ok">saved</span></div>
+            <div class="mock-item"><span class="mock-url">news.ycombinator.com</span><span class="mock-badge ok">saved</span></div>
+            <div class="mock-item"><span class="mock-url">wiki.example.org/page</span><span class="mock-badge ok">saved</span></div>
+            <div class="mock-footer">
+              <div class="mock-btn">Options</div>
+              <div class="mock-btn ghost">Wayback Machine</div>
+            </div>
+          </div>
+          <p>Popup — toggle + recent archives</p>
+        </div>
+        <div class="screenshot-card">
+          <div class="screenshot-mock options-mock">
+            <div class="mock-sync-badge">Settings sync across your devices</div>
+            <div class="mock-section-title">Ignore List</div>
+            <div class="mock-domain-item">localhost <span class="mock-remove">Remove</span></div>
+            <div class="mock-domain-item">mail.google.com <span class="mock-remove">Remove</span></div>
+            <div class="mock-domain-item">paypal.com <span class="mock-remove">Remove</span></div>
+            <div class="mock-add"><span>mybank.com</span><div class="mock-btn sm">Add</div></div>
+          </div>
+          <p>Options — cross-device synced ignore list</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Install CTAs -->
+  <section class="section section-alt">
+    <div class="wrap center">
+      <h2 class="section-title">Install ChronoKeep</h2>
+      <p class="install-note">Not yet on the Chrome Web Store — load it directly from the GitHub release.</p>
+      <div class="install-cards">
+        <div class="install-card">
+          <strong>Chrome / Edge (Chromium)</strong>
+          <ol>
+            <li>Download <code>chronokeep.zip</code> from the <a href="https://github.com/chirag127/chronokeep-bs-ext/releases/latest" target="_blank" rel="noopener">latest release</a></li>
+            <li>Extract the zip</li>
+            <li>Open <code>chrome://extensions</code></li>
+            <li>Enable <strong>Developer mode</strong></li>
+            <li>Click <strong>Load unpacked</strong> &rarr; select the <code>extension/</code> folder</li>
+          </ol>
+        </div>
+        <div class="install-card">
+          <strong>Firefox</strong>
+          <p>Firefox AMO submission coming soon. For now, load as a temporary add-on via <code>about:debugging</code> &rarr; Load Temporary Add-on &rarr; select <code>extension/manifest.json</code>.</p>
+        </div>
+      </div>
+      <a href="https://github.com/chirag127/chronokeep-bs-ext/releases/latest" class="btn-primary" target="_blank" rel="noopener">Download chronokeep.zip</a>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="wrap">
+      <h2 class="section-title">FAQ</h2>
+      <dl class="faq-list">
+        <dt>Does ChronoKeep send my data anywhere?</dt>
+        <dd>It sends only the URL of each visited page to <code>web.archive.org</code>. No personal data, no analytics, no server we own. See the <a href="privacy.html">privacy policy</a>.</dd>
+
+        <dt>What about private pages — banking, email?</dt>
+        <dd>The default ignore list covers localhost, Gmail, Outlook, banking patterns, and PayPal. You can add any domain or URL pattern in Options. Ignored pages are never sent to the Wayback Machine.</dd>
+
+        <dt>Will pages in my ignore list show up in the Wayback Machine?</dt>
+        <dd>No. ChronoKeep never fires a save request for ignored URLs. Whether a page was previously archived by others is a separate question.</dd>
+
+        <dt>What is cross-device sync and how does it work?</dt>
+        <dd>Your ignore list, on/off state, and archive delay are stored in <code>chrome.storage.sync</code>. Chrome and Edge automatically sync this data across all your signed-in browser instances using your Google or Microsoft account — no account on our end, no backend. History stays local-only because it can be large.</dd>
+
+        <dt>Does the extension work in Firefox?</dt>
+        <dd>The extension targets MV3. Firefox supports MV3 from v109. Load it temporarily via <code>about:debugging</code>. AMO submission is planned.</dd>
+
+        <dt>Can I archive pages that are behind a login?</dt>
+        <dd>The Wayback Machine save endpoint fetches the page as an anonymous user — it sees the logged-out version. ChronoKeep submits the URL but the snapshot quality depends on how much of the page is public.</dd>
+
+        <dt>Does archiving slow down my browsing?</dt>
+        <dd>No. The archive request fires in a background service worker with a configurable delay (default 1 second after page load). It has no impact on page rendering.</dd>
+
+        <dt>Is this open source?</dt>
+        <dd>Yes. MIT license. Source on <a href="https://github.com/chirag127/chronokeep-bs-ext" target="_blank" rel="noopener">GitHub</a>.</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <span class="footer-brand">ChronoKeep</span>
+      <ul class="footer-links">
+        <li><a href="privacy.html">Privacy</a></li>
+        <li><a href="terms.html">Terms</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="https://github.com/chirag127/chronokeep-bs-ext" target="_blank" rel="noopener">GitHub</a></li>
+      </ul>
+      <p class="footer-copy">MIT License &mdash; by <a href="https://github.com/chirag127" target="_blank" rel="noopener">Chirag Singhal</a></p>
+    </div>
+  </footer>
 </body>
 </html>

@@ -1,143 +1,99 @@
-/**
- * Options page script for Auto Wayback Machine Saver
- */
-
 import StorageUtils from "../storage.js";
 
-// DOM elements
+const enableToggle  = document.getElementById("enableToggle");
+const delayInput    = document.getElementById("delayInput");
 const newDomainInput = document.getElementById("newDomain");
-const addDomainBtn = document.getElementById("addDomainBtn");
-const ignoreList = document.getElementById("ignoreList");
-const historyList = document.getElementById("historyList");
+const addDomainBtn  = document.getElementById("addDomainBtn");
+const ignoreListEl  = document.getElementById("ignoreList");
+const historyListEl = document.getElementById("historyList");
 const clearHistoryBtn = document.getElementById("clearHistoryBtn");
 
-/**
- * Format a timestamp as a readable date string
- * @param {number} timestamp - The timestamp to format
- * @returns {string} - Formatted date string
- */
-function formatDate(timestamp) {
-    const date = new Date(timestamp);
-    return date.toLocaleString();
+function formatDate(ts) {
+  return new Date(ts).toLocaleString(undefined, {
+    month: "short", day: "numeric",
+    hour: "2-digit", minute: "2-digit",
+  });
 }
 
-/**
- * Render the ignore list
- * @param {Array<string>} domains - The list of domains to ignore
- */
 function renderIgnoreList(domains) {
-    ignoreList.innerHTML = "";
+  if (!domains.length) {
+    ignoreListEl.innerHTML = '<li class="empty-state">No patterns — everything will be archived.</li>';
+    return;
+  }
+  ignoreListEl.innerHTML = domains.map((d) =>
+    `<li>
+      <span>${d}</span>
+      <button class="remove-btn" data-domain="${d}">Remove</button>
+    </li>`
+  ).join("");
 
-    if (domains.length === 0) {
-        ignoreList.innerHTML =
-            '<li class="empty-list">No domains in ignore list</li>';
-        return;
-    }
-
-    domains.forEach((domain) => {
-        const item = document.createElement("li");
-
-        const domainText = document.createElement("span");
-        domainText.textContent = domain;
-
-        const removeBtn = document.createElement("button");
-        removeBtn.className = "remove-btn";
-        removeBtn.textContent = "Remove";
-        removeBtn.addEventListener("click", async () => {
-            await StorageUtils.removeFromIgnoreList(domain);
-            const updatedList = await StorageUtils.getIgnoreList();
-            renderIgnoreList(updatedList);
-        });
-
-        item.appendChild(domainText);
-        item.appendChild(removeBtn);
-        ignoreList.appendChild(item);
+  ignoreListEl.querySelectorAll(".remove-btn").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      await StorageUtils.removeFromIgnoreList(btn.dataset.domain);
+      renderIgnoreList(await StorageUtils.getIgnoreList());
     });
+  });
 }
 
-/**
- * Render the archive history
- * @param {Array} history - The archive history
- */
 function renderHistory(history) {
-    historyList.innerHTML = "";
-
-    if (history.length === 0) {
-        historyList.innerHTML = '<div class="empty-list">No archives yet</div>';
-        return;
-    }
-
-    history.forEach((entry) => {
-        const item = document.createElement("div");
-        item.className = "history-item";
-
-        const link = document.createElement("a");
-        link.href = entry.archiveUrl;
-        link.target = "_blank";
-        link.textContent = entry.url;
-
-        const timestamp = document.createElement("div");
-        timestamp.className = "timestamp";
-        timestamp.textContent = formatDate(entry.timestamp);
-
-        item.appendChild(link);
-        item.appendChild(timestamp);
-        historyList.appendChild(item);
-    });
+  if (!history.length) {
+    historyListEl.innerHTML = '<div class="empty-state">No archives yet.</div>';
+    return;
+  }
+  historyListEl.innerHTML = history.map((entry) => {
+    const cls = entry.status === "ok" ? "status-ok" : "status-fail";
+    const label = entry.status === "ok" ? "saved" : "failed";
+    return `
+      <div class="history-item">
+        <a href="${entry.archiveUrl}" target="_blank" rel="noopener" title="${entry.url}">${entry.url}</a>
+        <div class="meta">
+          <span class="timestamp">${formatDate(entry.timestamp)}</span>
+          <span class="status-badge ${cls}">${label}</span>
+        </div>
+      </div>`;
+  }).join("");
 }
 
-/**
- * Initialize the options page
- */
-async function initOptions() {
-    try {
-        // Get and render the ignore list
-        const domains = await StorageUtils.getIgnoreList();
-        renderIgnoreList(domains);
+async function init() {
+  const [enabled, delay, domains, history] = await Promise.all([
+    StorageUtils.isEnabled(),
+    StorageUtils.getArchiveDelay(),
+    StorageUtils.getIgnoreList(),
+    StorageUtils.getHistory(),
+  ]);
 
-        // Get and render the history
-        const history = await StorageUtils.getHistory();
-        renderHistory(history);
+  enableToggle.checked = enabled;
+  delayInput.value = delay;
+  renderIgnoreList(domains);
+  renderHistory(history);
 
-        // Set up event listeners
-        addDomainBtn.addEventListener("click", async () => {
-            const domain = newDomainInput.value.trim();
-            if (domain) {
-                await StorageUtils.addToIgnoreList(domain);
-                newDomainInput.value = "";
-                const updatedList = await StorageUtils.getIgnoreList();
-                renderIgnoreList(updatedList);
-            }
-        });
+  enableToggle.addEventListener("change", () =>
+    StorageUtils.setEnabled(enableToggle.checked)
+  );
 
-        newDomainInput.addEventListener("keypress", async (e) => {
-            if (e.key === "Enter") {
-                const domain = newDomainInput.value.trim();
-                if (domain) {
-                    await StorageUtils.addToIgnoreList(domain);
-                    newDomainInput.value = "";
-                    const updatedList = await StorageUtils.getIgnoreList();
-                    renderIgnoreList(updatedList);
-                }
-            }
-        });
+  delayInput.addEventListener("change", () => {
+    const v = parseInt(delayInput.value, 10);
+    if (!isNaN(v) && v >= 500) StorageUtils.setArchiveDelay(v);
+  });
 
-        clearHistoryBtn.addEventListener("click", async () => {
-            if (
-                confirm("Are you sure you want to clear your archive history?")
-            ) {
-                await StorageUtils.clearHistory();
-                const emptyHistory = await StorageUtils.getHistory();
-                renderHistory(emptyHistory);
-            }
-        });
-    } catch (error) {
-        console.error("Error initializing options page:", error);
-        ignoreList.innerHTML = '<li class="empty-list">Error loading data</li>';
-        historyList.innerHTML =
-            '<div class="empty-list">Error loading data</div>';
-    }
+  async function addDomain() {
+    const domain = newDomainInput.value.trim();
+    if (!domain) return;
+    await StorageUtils.addToIgnoreList(domain);
+    newDomainInput.value = "";
+    renderIgnoreList(await StorageUtils.getIgnoreList());
+  }
+
+  addDomainBtn.addEventListener("click", addDomain);
+  newDomainInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") addDomain();
+  });
+
+  clearHistoryBtn.addEventListener("click", async () => {
+    if (!confirm("Clear all archive history on this device?")) return;
+    await StorageUtils.clearHistory();
+    renderHistory([]);
+  });
 }
 
-// Initialize the options page when the DOM is loaded
-document.addEventListener("DOMContentLoaded", initOptions);
+document.addEventListener("DOMContentLoaded", init);

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — ChronoKeep</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav class="nav">
+    <a class="nav-brand" href="/">ChronoKeep</a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="privacy.html">Privacy</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-header">
+    <h1>About ChronoKeep</h1>
+    <p>What it is. Why it exists.</p>
+  </div>
+
+  <div class="page-body">
+    <div class="prose">
+      <h2>What it does</h2>
+      <p>ChronoKeep is a Manifest V3 browser extension that silently submits every web page you visit to the <a href="https://web.archive.org/" target="_blank" rel="noopener">Internet Archive Wayback Machine</a>. The moment a page finishes loading, a background service worker fires a save request to <code>https://web.archive.org/save/</code>. The page gets a permanent, publicly-accessible snapshot — without any action from you.</p>
+
+      <h2>Why it exists</h2>
+      <p>Pages disappear. Articles get paywalled. Documentation moves. Link rot is real. ChronoKeep ensures that everything you read has a permanent snapshot — so you, or anyone with the URL, can always find it again.</p>
+
+      <h2>Cross-device sync</h2>
+      <p>Your ignore list, on/off toggle, and archive delay sync across all your signed-in Chrome and Edge instances via <code>chrome.storage.sync</code>. This uses the browser's own sync mechanism — no account we manage, no server we run.</p>
+
+      <h2>Open source</h2>
+      <p>ChronoKeep is fully open source under the <strong>MIT License</strong>. The source is on <a href="https://github.com/chirag127/chronokeep-bs-ext" target="_blank" rel="noopener">GitHub</a>. Contributions, bug reports, and feature requests are welcome.</p>
+
+      <h2>No backend, no tracking</h2>
+      <p>The extension has no server, no database, no analytics, and no accounts. All local state lives in <code>chrome.storage</code>. The only network requests it makes are save requests to <code>web.archive.org</code>.</p>
+
+      <h2>Author</h2>
+      <p>Built by <a href="https://github.com/chirag127" target="_blank" rel="noopener">Chirag Singhal</a>.</p>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <span class="footer-brand">ChronoKeep</span>
+      <ul class="footer-links">
+        <li><a href="privacy.html">Privacy</a></li>
+        <li><a href="terms.html">Terms</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="https://github.com/chirag127/chronokeep-bs-ext" target="_blank" rel="noopener">GitHub</a></li>
+      </ul>
+      <p class="footer-copy">MIT License &mdash; by <a href="https://github.com/chirag127" target="_blank" rel="noopener">Chirag Singhal</a></p>
+    </div>
+  </footer>
+</body>
+</html>

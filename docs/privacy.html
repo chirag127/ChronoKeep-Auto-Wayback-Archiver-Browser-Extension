@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — ChronoKeep</title>
+  <meta name="description" content="ChronoKeep privacy policy. No personal data collected. URLs sent only to web.archive.org. No backend, no tracking.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav class="nav">
+    <a class="nav-brand" href="/">ChronoKeep</a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-header">
+    <h1>Privacy Policy</h1>
+    <p>Effective date: 2026-01-01</p>
+  </div>
+
+  <div class="page-body">
+    <div class="prose">
+      <h2>Summary</h2>
+      <p>ChronoKeep collects <strong>no personal data</strong>. It has no backend, no analytics, no accounts. The only external service it contacts is the Internet Archive Wayback Machine.</p>
+
+      <h2>What data is processed</h2>
+      <ul>
+        <li><strong>Page URLs</strong> — the URL of each web page you visit (excluding ignored domains) is submitted to <code>https://web.archive.org/save/</code>. This is the Internet Archive's public save endpoint. The URL becomes a public archive.</li>
+        <li><strong>Local storage</strong> — your on/off toggle, archive delay, and history of archived pages are stored in <code>chrome.storage.local</code> on your device only.</li>
+        <li><strong>Sync storage</strong> — your ignore list, on/off toggle, and archive delay are stored in <code>chrome.storage.sync</code>. Chrome and Edge sync this data to your other signed-in devices via your Google or Microsoft account. ChronoKeep never touches this data beyond reading and writing it through the browser API.</li>
+      </ul>
+
+      <h2>What data is NOT collected</h2>
+      <ul>
+        <li>No name, email, IP address, or any personal identifier.</li>
+        <li>No page content — only the URL is sent to the Wayback Machine.</li>
+        <li>No analytics, crash reports, or telemetry.</li>
+        <li>No advertising identifiers.</li>
+      </ul>
+
+      <h2>The ignore list</h2>
+      <p>Any domain or URL pattern you add to the ignore list will never be submitted to the Wayback Machine. The default ignore list covers localhost, banking-related patterns, Gmail, Outlook, and PayPal. You can manage it at any time in Options.</p>
+
+      <h2>Third-party services</h2>
+      <p>The only third party this extension contacts is the <a href="https://archive.org/" target="_blank" rel="noopener">Internet Archive</a> (<code>web.archive.org</code>). When a URL is submitted, the Internet Archive's own privacy policy applies to how they handle that URL and the resulting snapshot. Pages submitted via the save endpoint become publicly accessible snapshots.</p>
+
+      <h2>Children</h2>
+      <p>ChronoKeep is not directed at children under 13 and does not knowingly collect information from anyone.</p>
+
+      <h2>Changes</h2>
+      <p>If the privacy policy changes materially, the effective date above will be updated and a commit will be made to the repository.</p>
+
+      <h2>Contact</h2>
+      <p>Questions: open an issue on <a href="https://github.com/chirag127/chronokeep-bs-ext/issues" target="_blank" rel="noopener">GitHub</a> or see the <a href="contact.html">contact page</a>.</p>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <span class="footer-brand">ChronoKeep</span>
+      <ul class="footer-links">
+        <li><a href="privacy.html">Privacy</a></li>
+        <li><a href="terms.html">Terms</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="https://github.com/chirag127/chronokeep-bs-ext" target="_blank" rel="noopener">GitHub</a></li>
+      </ul>
+      <p class="footer-copy">MIT License &mdash; by <a href="https://github.com/chirag127" target="_blank" rel="noopener">Chirag Singhal</a></p>
+    </div>
+  </footer>
+</body>
+</html>

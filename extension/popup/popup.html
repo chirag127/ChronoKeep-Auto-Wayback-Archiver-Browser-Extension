@@ -3,36 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Auto Wayback Machine Saver</title>
+  <title>ChronoKeep</title>
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
   <div class="container">
     <header>
-      <h1>Auto Wayback Machine Saver</h1>
+      <span class="wordmark">ChronoKeep</span>
     </header>
-    
-    <div class="toggle-container">
-      <label class="toggle-switch">
+
+    <div class="toggle-row">
+      <label class="toggle-switch" aria-label="Enable auto-archiving">
         <input type="checkbox" id="enableToggle">
         <span class="slider"></span>
       </label>
-      <span id="statusText">Auto-archiving is enabled</span>
+      <span id="statusText">Auto-archiving enabled</span>
     </div>
-    
-    <div class="history-container">
+
+    <div class="history-wrap">
       <h2>Recent Archives</h2>
       <div id="historyList" class="history-list">
         <div class="loading">Loading...</div>
       </div>
     </div>
-    
+
     <footer>
       <button id="optionsBtn" class="btn">Options</button>
-      <a href="https://archive.org/" target="_blank" class="btn">Visit Wayback Machine</a>
+      <a href="https://web.archive.org/" target="_blank" rel="noopener" class="btn btn-ghost">Wayback Machine</a>
     </footer>
   </div>
-  
   <script type="module" src="popup.js"></script>
 </body>
 </html>
