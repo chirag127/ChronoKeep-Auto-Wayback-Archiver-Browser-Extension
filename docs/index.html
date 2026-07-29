@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChronoKeep — Auto Wayback Archiver</title>
+<meta name="description" content="Browser extension that automatically saves every visited webpage to the Internet Archive Wayback Machine, with a customizable ignore list for privacy.">
+<style>
+  :root { color-scheme: dark; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; background: #0b1020; color: #e6ebff; line-height: 1.6; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem; }
+  .wrap { max-width: 640px; }
+  .badge { display: inline-block; font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: #7dd3fc; border: 1px solid #1e3a5f; border-radius: 999px; padding: .3rem .8rem; margin-bottom: 1.5rem; }
+  h1 { font-size: 2.4rem; line-height: 1.15; margin-bottom: 1rem; background: linear-gradient(90deg,#7dd3fc,#a78bfa); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  p.lead { font-size: 1.15rem; color: #b8c2e0; margin-bottom: 2rem; }
+  ul { list-style: none; margin-bottom: 2.5rem; }
+  li { padding-left: 1.5rem; position: relative; margin-bottom: .6rem; color: #c9d3f0; }
+  li::before { content: "→"; position: absolute; left: 0; color: #7dd3fc; }
+  .cta { display: inline-flex; align-items: center; gap: .5rem; background: #7dd3fc; color: #0b1020; font-weight: 600; text-decoration: none; padding: .8rem 1.5rem; border-radius: 10px; transition: transform .15s ease; }
+  .cta:hover { transform: translateY(-2px); }
+  footer { margin-top: 3rem; font-size: .85rem; color: #6b779c; }
+  a { color: #7dd3fc; }
+</style>
+</head>
+<body>
+  <main class="wrap">
+    <span class="badge">Manifest V3 · MIT</span>
+    <h1>ChronoKeep</h1>
+    <p class="lead">A browser extension that automatically saves every webpage you visit to the Internet Archive's Wayback Machine — with a customizable ignore list for privacy and real-time archiving feedback.</p>
+    <ul>
+      <li>Automatic background archiving to the Wayback Machine</li>
+      <li>Per-site ignore list keeps private pages out of the archive</li>
+      <li>Real-time archive status in the toolbar popup</li>
+      <li>No account, no tracking — talks only to web.archive.org</li>
+    </ul>
+    <a class="cta" href="https://github.com/chirag127/ChronoKeep-Auto-Wayback-Archiver-Browser-Extension">View on GitHub</a>
+    <footer>Open source · MIT License · by Chirag Singhal</footer>
+  </main>
+</body>
+</html>
